@@ -37,9 +37,10 @@ $(document).ready(function() {
 					"' type='button' class='btn btn-info' style='margin:4px 0px;padding:2px;'>" + v.name + "</button></div>";
 				$("#play-list").append(appendStr);
 			})
-
-			$("#play-title").text(data.data.title);
-			$("#play-titles").text(data.data.data[0].name);
+			playTitle = data.data.title;
+			playTitles = data.data.data[0].name;
+			$("#play-title").text(playTitle);
+			$("#play-titles").text(playTitles);
 
 			playListId = 'playList0';
 
@@ -113,9 +114,24 @@ $(document).ready(function() {
 			alert("此资源不存在，请换个资源或者换个站点");
 		}
 	});
+	
+	$("#play-url").click(function(){
+		$("#play-title").text('播放自定义链接');
+		$("#play-titles").text('');
+		console.log($("#video-url").val());
+		dp.switchVideo({
+			url: $("#video-url").val(),
+		});
+		setTimeout(function() {
+			dp.play();dp.subtitle.hide();
+		}, 200);
+	});
+  
+  
 });
 
 function play(id, url, name) {
+	$("#play-title").text(playTitle);
 	$("#play-titles").text(name);
 	if (playListId) {
 		$("#" + playListId).removeClass("btn btn-primary");
