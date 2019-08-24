@@ -19,6 +19,9 @@
 		<link rel="stylesheet" href="static/css/video-js.min.css">
 		<link rel="stylesheet" href="static/css/style-v.css">
 		<title>影视全搜索</title>
+		<link rel="stylesheet" href="static/dplayer/DPlayer.min.css">
+		<script src="static/dplayer/hls.min.js"></script>
+		<script src="static/dplayer/DPlayer.min.js"></script>
 	</head>
 
 	<body>
@@ -44,19 +47,15 @@
 		</div>
 	</nav>
 		<div class="container">
-          <div  style="color:yellow">
-             <span id="play-title">资源地址载入中，请等待</span>&nbsp;<span id="play-titles">...</span>
-          </div>
+			<div  style="color:yellow">
+				<span id="play-title">资源地址载入中，请等待</span>&nbsp;<span id="play-titles">...</span>
+			</div>
+			<div style="width:100%;position:relative;padding-bottom:56.25%;height: 0;">
+				<div id="dplayer" style="position: absolute;top:0;left: 0;width: 100%;height: 100%"></div>
+			</div>
 			<div class="row" >
-				<div class="col-12 py-3" style="padding-top:0 !important">
-					<video id="player" class="video-js vjs-16-9 vjs-big-play-centered" controls preload="auto" data-setup="{}">
-						<source src="https://node.imgio.in/demo/birds.m3u8" type="application/x-mpegURL">
-						<p class="vjs-no-js">
-							要查看此视频，请启用javascript，并考虑升级到
-							<a href="https://videojs.com/html5-video-support/" target="_blank">支持HTML5视频</a>
-						</p>
-					</video>
-					<div class="input-group my-3">
+				<div class="col-12 py-0" style="padding-top:0 !important">
+					<div class="input-group my-1">
 						<input id="video-url" required name="play" type="text" class="form-control nice" placeholder="输入 M3U8 URL 地址"
 						 value="" aria-describedby="button-addon2">
 						<div class="input-group-append">
@@ -66,6 +65,7 @@
 					</div>
 				</div>
 			</div>
+			<marquee id="marquee" style="color:#ffc107"></marquee>
 			<div class="row nice-c">
 				<div class="col">
 					<h5>播放列表</h5>
@@ -79,9 +79,10 @@
           </div>
 		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-		<script src="static/js/video.min.js"></script>
 		
 		<script src="static/js/detail.js?cs"></script>
       <script src="static/js/common.js"></script>
-		
+<script>
+	
+</script>
 	</body>

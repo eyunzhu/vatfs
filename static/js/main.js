@@ -5,6 +5,33 @@
  * blog   : http://eyunzhu.com
 */
 $(document).ready(function() {
+	Maintain = false;
+	$.ajax({
+		url: "https://tools.eyunzhu.com/api/wxgzh/video/config",
+		timeout: 4000,
+		complete: function(result) {
+			if (result.status == 200) {
+				result.responseJSON.data.link.forEach(function(v) {
+					appendStr = '<a style="color:#ffc107" href="'+v.link+'">'+v.name+'</a>&nbsp;&nbsp;';
+					$("#bottobLink").append(appendStr);
+				})
+				if (result.responseJSON.code) {
+					siteSum = result.responseJSON.data.siteSum
+				} else {
+					console.log("API维护中");
+					Maintain=true;
+					$("#siteDescript").empty();
+					$("#siteDescript").append('<h5 style="color:white">维护中...&nbsp;&nbsp;<span style="color:#ffc107">'+result.responseJSON.msg+'</span> </h5><div ><a style="color:white" href="mailto:support@eyunzhu.com">联系作者: support@eyunzhu.com</a></div>');
+				}
+			} else{
+				$("#siteDescript").empty();
+				$("#siteDescript").append('<h5 style="color:red">程序错误...</h5>&nbsp;&nbsp;<div style="color:#ffc107">管理员请查看程序是否配置正确</div><div ><a href="https://github.com/eyunzhu/vatfs">最新程序下载地址</a></div><div ><a style="color:white" href="mailto:support@eyunzhu.com">联系作者: support@eyunzhu.com</a></div> ');
+				
+				Maintain=true;
+			}
+		}
+	});
+	
 	var kw = getQueryVariable("kw");
 	if (decodeURIComponent(kw) && decodeURIComponent(kw) != 'false') {
 		$('#input-kw').val(decodeURIComponent(kw));
@@ -19,6 +46,10 @@ $(document).ready(function() {
 	})
 });
 function doSearch() {
+	if(Maintain){
+		alert("维护中，请稍后尝试")
+		return;
+	}
 	//获取搜索关键词
 	var wd = $("#input-kw").val();
 	if (wd.match(/^[ ]*$/)) {
@@ -30,7 +61,7 @@ function doSearch() {
 	//清空搜索结果
 	$("#searchResult").empty();
 
-	for (var siteId = 0; siteId < 11; siteId++) {
+	for (var siteId = 0; siteId < siteSum; siteId++) {
 		//加站点区块
 		$("#searchResult").append('<div id="siteBlock' + siteId + '" class="col-12"></div>');
 		//添加站点标题
@@ -49,8 +80,6 @@ function doSearch() {
 			complete: function(result) {
 				if (result.status == 200) {
 					if (result.responseJSON.code && result.responseJSON.data.data.length) {
-						//console.log("请求成功,有数据", result.responseJSON.data.data)
-						//移除加载图标
 						$("#loading" + result.responseJSON.data.siteId).remove();
 						var appendStr = "";
 						result.responseJSON.data.data.forEach(function(v) {
@@ -60,7 +89,6 @@ function doSearch() {
 						})
 					} else {
 						console.log("请求成功,无数据", result.responseJSON)
-						//移除加载动画
 						$("#loading" + result.responseJSON.data.siteId).remove();
 						$("#siteBlock" + result.responseJSON.data.siteId).append(
 							'<div class="col-12 nice-c" >&emsp;&emsp;站点无此影视，关注微信公众号：古图，留言添加资源</div>');
@@ -73,7 +101,7 @@ function doSearch() {
 	}
 	setTimeout(function() {
 		console.log("5m");
-		for (var siteId = 0; siteId < 11; siteId++) {
+		for (var siteId = 0; siteId < siteSum; siteId++) {
 			var removeResult = $("#loading" + siteId).remove();
 			if (removeResult.length) {
 				$("#siteBlock" + siteId).append('<div class="col-12 nice-c" >&emsp;&emsp;请求超时</div>');
