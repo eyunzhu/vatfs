@@ -76,7 +76,7 @@ function doSearch() {
 		var searchUrl = "https://tools.eyunzhu.com/api/wxgzh/video?siteId=" + siteId + "&wd=" + wd;
 		$.ajax({
 			url: searchUrl,
-			timeout: 4000,
+			//timeout: 14000,
 			complete: function(result) {
 				if (result.status == 200) {
 					if (result.responseJSON.code && result.responseJSON.data.data.length) {
@@ -100,7 +100,7 @@ function doSearch() {
 		});
 	}
 	setTimeout(function() {
-		console.log("5m");
+		console.log("10m");
 		for (var siteId = 0; siteId < siteSum; siteId++) {
 			var removeResult = $("#loading" + siteId).remove();
 			if (removeResult.length) {
