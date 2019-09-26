@@ -1,0 +1,8 @@
+{
+	"webSiteTitle":"影视全搜索",
+    "config": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/config",
+	"search": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/index",
+	"detail": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/detail",
+	"liveSource": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/getLiveSource",
+	"version":"1.1"
+}

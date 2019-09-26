@@ -18,23 +18,23 @@
 		<link rel="shortcut icon" href="static/ysqss.ico" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/open-iconic@1.1.1/font/css/open-iconic-bootstrap.min.css">
-		<link rel="stylesheet" href="static/css/style-v.css">
+		<link rel="stylesheet" href="static/css/style-v.css?ssww">
 		<title>影视全搜索</title>
 	</head>
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
-			<div class="container">
-				<a class="navbar-brand logo" href="/">
-					<img src="static/logo.png" alt="影视全搜索" class="mr-2">影视全搜索</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			<div class="container" >
+				<a class="navbar-dark logo" href="/" style="color: #000000;">
+					<img src="static/logo.png" alt="影视全搜索" class="mr-2" >影视全搜索</a>
+				<!-- <button class="navbar-toggler" type="button"  data-toggle="collapse" data-target="#navbarSupportedContent"
 				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+					<span style="color: #000000;">更多</span>
+				</button> -->
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-							 aria-haspopup="true" aria-expanded="false">更多</a>
+							 aria-haspopup="true" aria-expanded="false" style="color: #000000!important;">更多</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="http://tb.eyunzhu.com">优惠券</a>
 								<a class="dropdown-item" href="http://eyunzhu.com">忆云竹</a></div>
@@ -50,29 +50,30 @@
 						<input id="input-kw" required name="play" type="text" class="form-control nice" placeholder="全网影片搜索" value=""
 						 aria-describedby="button-addon2">
 						<div class="input-group-append">
-							<button id="search-bt" class="btn btn-dark px-1 play border-0" type="button">
+							<button id="search-bt" class="btn btn-dark px-1 play border-0"  type="button">
 								<img src="static/play-v.png" height="24"></button>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 			<div id="siteDescript">
-				<h5 style="color:white">影视全搜索 <span id="searchSuggest" style="color:#ffc107"></span> </h5>
-				<div class="row nice-c">
-					<div class="col">&emsp;&emsp;本站是一个提供全网影视资源检索的站点，其包含了全网20多个影视资源站点的资源。为您提供最全的影视资源检索。</div>
+				<h5 style="color:#333">影视全搜索 
+					<span id="messageHint" style="color:red"></span>
+					<span id="messageHintLink" style="color:#ffc107"></span>
+				</h5>
+				<div class="row">
+					<div  class="col">&emsp;&emsp;本站是一个提供全网影视资源检索的站点，其包含了全网10多个影视资源站点的资源。为您提供最全的影视资源检索。</div>
 				</div>
 			</div>
 			<div id="searchResult" class="row mb-3"></div>
-			
-			<div id="bottobLink" style="margin-bottom: 10px;color: white;font-size: 14px;">
-				<!-- <a href="http://eyunzhu.com">忆云竹</a>&nbsp;&nbsp;
-				<a href="http://v.eyunzhu.com">影视全搜索</a> -->
-			</div>
+			<div id="bottomLink" style="margin-bottom: 10px;font-size: 14px;"></div><hr />
+			<div id="liveSourceBox"></div>
 		</div>
-		<script src="static/js/common.js?"></script>
 		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
-		<script src="static/js/main.js?ssc"></script>
+		<script src="static/js/common.js?ww"></script>
+		<script src="static/js/main.js?sws"></script>
 	</body>
 
 </html>

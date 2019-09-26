@@ -4,52 +4,86 @@
  * github : https://github.com/eyunzhu/vatfs
  * blog   : http://eyunzhu.com
 */
+
+//获取基本配置
+var localConfig,serverConfig;
 $(document).ready(function() {
-	Maintain = false;
+	//获取本地基本配置
 	$.ajax({
-		url: "https://tools.eyunzhu.com/api/wxgzh/video/config",
-		timeout: 6000,
-		complete: function(result) {
-			if (result.status == 200) {
-				result.responseJSON.data.link.forEach(function(v) {
-					appendStr = '<a style="color:#ffc107" href="'+v.link+'">'+v.name+'</a>&nbsp;&nbsp;';
-					$("#bottobLink").append(appendStr);
-				})
-				if (result.responseJSON.code) {
-					siteSum = result.responseJSON.data.siteSum
-				} else {
-					console.log("API维护中");
-					Maintain=true;
-					$("#siteDescript").empty();
-					$("#siteDescript").append('<h5 style="color:white">维护中...&nbsp;&nbsp;<span style="color:#ffc107">'+result.responseJSON.msg+'</span> </h5><div ><a style="color:white" href="mailto:support@eyunzhu.com">联系作者: support@eyunzhu.com</a></div>');
-				}
-			} else{
-				$("#siteDescript").empty();
-				$("#siteDescript").append('<h5 style="color:red">程序错误...</h5>&nbsp;&nbsp;<div style="color:#ffc107">管理员请查看程序是否配置正确</div><div ><a href="https://github.com/eyunzhu/vatfs">最新程序下载地址</a></div><div ><a style="color:white" href="mailto:support@eyunzhu.com">联系作者: support@eyunzhu.com</a></div> ');
-				
-				Maintain=true;
-			}
+		url: "static/js/config.json",
+		success:function(e){
+			localConfig = e
+			getServerConfig()
+			getLiveSource()
+		},
+		error:function(){
+			$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">Local configuration error!</a>&emsp;');
+			$("#messageHint").append('<a  href="http://v.eyunzhu.com">官网</a>&emsp;');
+			$("#messageHint").append('<a  href="http://eyunzhu.com">联系作者</a>&emsp;&emsp;');
 		}
 	});
-	
-	var kw = getQueryVariable("kw");
-	if (decodeURIComponent(kw) && decodeURIComponent(kw) != 'false') {
-		$('#input-kw').val(decodeURIComponent(kw));
-		doSearch();
-	}
-	$('#input-kw').bind('keypress', function(event) {
-		if (event.keyCode == "13")doSearch();
+})
+//获取服务端配置
+function getServerConfig(){
+	$.ajax({
+		url: localConfig.config,
+		success:function(e){
+			serverConfig = e.data
+			if(serverConfig.version != localConfig.version){
+				$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">有新版本更新</a>&emsp;');
+			}
+			serverConfig.link.forEach(function(v) {
+				appendStr = '<a style="color:#FFA500;" href="'+v.link+'">'+v.name+'</a>&nbsp;&nbsp;';
+				$("#bottomLink").append(appendStr);
+			})
+			
+			var kw = getQueryVariable("kw");
+			if (decodeURIComponent(kw) && decodeURIComponent(kw) != 'false') {
+				$('#input-kw').val(decodeURIComponent(kw));
+				doSearch();
+			}
+			$('#input-kw').bind('keypress', function(event) {
+				if (event.keyCode == "13")doSearch();
+			});
+			//点击搜索按钮
+			$("#search-bt").click(function() {
+				doSearch();
+			})
+		},
+		error:function(){
+			$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">Server Error!</a>&emsp;');
+			$("#messageHint").append('<a  href="http://v.eyunzhu.com">官网</a>&emsp;');
+			$("#messageHint").append('<a  href="http://eyunzhu.com">联系作者</a>&emsp;&emsp;');
+		}
 	});
-	//点击搜索按钮
-	$("#search-bt").click(function() {
-		doSearch();
-	})
-});
+}
+
+//获取直播源
+function getLiveSource(){
+	$.ajax({
+		url: localConfig.liveSource,
+		success:function(e){
+			if(e.code){
+				e.data.forEach(function(v){
+					appendStr = '<div><span >' +v.name +'</span><div style="margin-bottom: 10px;font-size: 14px;">';
+					v.data.forEach(function(vs){
+						appendStr += '<a href="/play.html?url='+vs.url+'">'+vs.name+'</a>&nbsp;&nbsp;';
+					})
+					appendStr += '</div></div>';
+					$("#liveSourceBox").append(appendStr);
+				})
+			}
+			
+		},
+		error:function(){
+			$("#messageHint").text("直播源获取错误，请检查!");
+			$("#messageHintLink").text("官方网站");
+			$("#messageHintLink").show();
+		}
+	});
+}
+
 function doSearch() {
-	if(Maintain){
-		alert("维护中，请稍后尝试")
-		return;
-	}
 	//获取搜索关键词
 	var wd = $("#input-kw").val();
 	if (wd.match(/^[ ]*$/)) {
@@ -61,7 +95,7 @@ function doSearch() {
 	//清空搜索结果
 	$("#searchResult").empty();
 
-	for (var siteId = 0; siteId < siteSum; siteId++) {
+	for (var siteId = 0; siteId < serverConfig.siteSum; siteId++) {
 		//加站点区块
 		$("#searchResult").append('<div id="siteBlock' + siteId + '" class="col-12"></div>');
 		//添加站点标题
@@ -73,7 +107,7 @@ function doSearch() {
 		$("#siteBlock" + siteId).append(loadingDiv);
 		$("#siteBlock" + siteId).append('<div id="urlblock' + siteId + '"  class="row mr-0"></div>');
 		//合成搜索链接
-		var searchUrl = "https://tools.eyunzhu.com/api/wxgzh/video?siteId=" + siteId + "&wd=" + wd;
+		var searchUrl = localConfig.search + "?siteId=" + siteId + "&wd=" + wd;
 		$.ajax({
 			url: searchUrl,
 			timeout: 4000,
@@ -101,7 +135,7 @@ function doSearch() {
 	}
 	setTimeout(function() {
 		console.log("5m");
-		for (var siteId = 0; siteId < siteSum; siteId++) {
+		for (var siteId = 0; siteId < serverConfig.siteSum; siteId++) {
 			var removeResult = $("#loading" + siteId).remove();
 			if (removeResult.length) {
 				$("#siteBlock" + siteId).append('<div class="col-12 nice-c" >&emsp;&emsp;请求超时</div>');
@@ -109,14 +143,4 @@ function doSearch() {
 		}
 	}, 20000)
 }
-function getQueryVariable(variable) {
-	var query = window.location.search.substring(1);
-	var vars = query.split("&");
-	for (var i = 0; i < vars.length; i++) {
-		var pair = vars[i].split("=");
-		if (pair[0] == variable) {
-			return pair[1];
-		}
-	}
-	return (false);
-}
+

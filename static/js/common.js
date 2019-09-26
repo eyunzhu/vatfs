@@ -4,6 +4,17 @@
  * github : https://github.com/eyunzhu/vatfs
  * blog   : http://eyunzhu.com
 */
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i = 0; i < vars.length; i++) {
+		var pair = vars[i].split("=");
+		if (pair[0] == variable) {
+			return pair[1];
+		}
+	}
+	return (false);
+}
 console.log('%c欢迎使用 %c影视全搜索 http://v.eyunzhu.com ','','color:#ff8400;');
 console.group('忆云竹');
 	console.log('忆云竹 %c技术教程,资源分享 http://eyunzhu.com','color:#ff8400');
@@ -16,7 +27,6 @@ console.group('更多资源');
 	console.log('关注微信公众号：古图');
 console.groupEnd('更多资源');
 console.log('%c ','background-image:url("https://eyunzhu.com/wp-content/uploads/2018/06/logo2.png");background-size:100% 100%;background-repeat:no-repeat;background-position:center center;line-height:0px;padding:30px 110px;');
-
 /* 友盟统计 */
 //console.log("友盟统计");
 var cnzz_s_tag = document.createElement('script');

@@ -4,28 +4,43 @@
  * github : https://github.com/eyunzhu/vatfs
  * blog   : http://eyunzhu.com
 */
-
 var playListId = "";
-var playUrl = "";
+//获取基本配置
+var localConfig,serverConfig;
 $(document).ready(function() {
+	//获取本地基本配置
 	$.ajax({
-		url: "https://tools.eyunzhu.com/api/wxgzh/video/config",
-		timeout: 4000,
-		complete: function(result) {
-			if (result.status == 200) {
-				if (result.responseJSON.code) {
-					$("#marquee").append(result.responseJSON.data.marquee);
-				} else {
-					alert('维护中，请稍后访问');
-					window.location.href="/../";
-				}
-			} else{
-				alert('维护中，请稍后访问');
-				window.location.href="/../";
-			}
+		url: "static/js/config.json",
+		success:function(e){
+			localConfig = e
+			getServerConfig()
+		},
+		error:function(){
+			$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">Local configuration error!</a>&emsp;');
+			$("#messageHint").append('<a  href="http://v.eyunzhu.com">官网</a>&emsp;');
+			$("#messageHint").append('<a  href="http://eyunzhu.com">联系作者</a>&emsp;&emsp;');
 		}
 	});
-	var url = "https://tools.eyunzhu.com/api/wxgzh/video/detail?siteId=" + getQueryVariable('siteId') + "&url=" +
+})
+//获取服务端配置
+function getServerConfig(){
+	$.ajax({
+		url: localConfig.config,
+		success:function(e){
+			serverConfig = e.data
+			getPlayUrl()
+			$("#marquee").append(serverConfig.marquee);
+		},
+		error:function(){
+			$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">Server Error!</a>&emsp;');
+			$("#messageHint").append('<a  href="http://v.eyunzhu.com">官网</a>&emsp;');
+			$("#messageHint").append('<a  href="http://eyunzhu.com">联系作者</a>&emsp;&emsp;');
+		}
+	});
+}
+
+function getPlayUrl(){
+	var url =  localConfig.detail + "?siteId=" + getQueryVariable('siteId') + "&url=" +
 		getQueryVariable('url');
 	$.get(url, function(data, status) {
 		if (data.data.data[0]) {
@@ -41,9 +56,9 @@ $(document).ready(function() {
 			playTitles = data.data.data[0].name;
 			$("#play-title").text(playTitle);
 			$("#play-titles").text(playTitles);
-
+	
 			playListId = 'playList0';
-
+	
 			$("#playList0").removeClass("btn btn-info");
 			$("#playList0").addClass("btn btn-primary");
 			
@@ -126,9 +141,7 @@ $(document).ready(function() {
 			dp.play();dp.subtitle.hide();
 		}, 200);
 	});
-  
-  
-});
+}
 
 function play(id, url, name) {
 	$("#play-title").text(playTitle);
@@ -152,14 +165,4 @@ function play(id, url, name) {
 }
 
 
-function getQueryVariable(variable) {
-	var query = window.location.search.substring(1);
-	var vars = query.split("&");
-	for (var i = 0; i < vars.length; i++) {
-		var pair = vars[i].split("=");
-		if (pair[0] == variable) {
-			return pair[1];
-		}
-	}
-	return (false);
-}
+

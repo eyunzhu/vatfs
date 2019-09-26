@@ -1,15 +1,15 @@
 .logo img{height:32px;margin-top:-4px}
-.logo{font-family:fantasy;color:#E1E1E1!important;}
-@media (min-width: 1200px){
+/* .logo{font-family:fantasy;color:#red!important;} */
+/* @media (min-width: 1200px){
     .container{max-width:960px}
 }
-body{background:#235}
-.nice{background:#347!important;color:#bbb;border:none}
-.nice-nav{background:#123!important;}
+body{}
+.nice{}
+.nice-nav{background:#fff!important;}
 .nice-a{color:#bacaff!important}
 .nice-a:hover{color:#EEE!important}
 input.nice:focus{color:#ddd}
 .nice-c{color:#bbb}
 .h-list{word-break:break-all;max-height:240px;overflow-y:auto}
 .play{background-color:#123}
-.play:hover{background-color:#012}
+.play:hover{background-color:#012} */
