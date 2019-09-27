@@ -4,5 +4,6 @@
 	"search": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/index",
 	"detail": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/detail",
 	"liveSource": "https://api.eyunzhu.com/plugin/eyunzhu_vatfs_api/api/getLiveSource",
+	"baiduTop":"http://e-api.io/api/tools/baiduTop",
 	"version":"1.1"
 }

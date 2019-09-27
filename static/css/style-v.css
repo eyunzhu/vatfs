@@ -13,3 +13,49 @@ input.nice:focus{color:#ddd}
 .h-list{word-break:break-all;max-height:240px;overflow-y:auto}
 .play{background-color:#123}
 .play:hover{background-color:#012} */
+
+.swiper1 .swiper11 {
+	width: 100%;
+}
+
+.swiper1 .selected ,.swiper11 .selected {
+	color: #ec5566;
+	/* border-bottom: 2px solid #ec5566; */
+}
+
+.swiper1 .swiper-slide ,.swiper11 .swiper-slide {
+	text-align: center;
+	font-size: 16px;
+	/* height: 50px; */
+	/* Center slide text vertically */
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	-webkit-align-items: center;
+	align-items: center;
+	cursor: pointer;
+}
+
+.swiper2 ,.swiper22{
+	width: 100%;
+}
+
+.swiper2 .swiper-slide{
+	padding: 0 10px;
+	height: calc(30vh);
+	box-sizing: border-box !important;
+	overflow-x: hidden !important;
+}
+.swiper22 .swiper-slide {
+	padding: 0 10px;
+	height: calc(10vh);
+	box-sizing: border-box !important;
+	overflow-x: hidden !important;
+}

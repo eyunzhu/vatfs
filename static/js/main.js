@@ -15,6 +15,7 @@ $(document).ready(function() {
 			localConfig = e
 			getServerConfig()
 			getLiveSource()
+			getSearchList()
 		},
 		error:function(){
 			$("#messageHint").append('<a  href="https://github.com/eyunzhu/vatfs" style="color: red;">Local configuration error!</a>&emsp;');
@@ -36,7 +37,6 @@ function getServerConfig(){
 				appendStr = '<a style="color:#FFA500;" href="'+v.link+'">'+v.name+'</a>&nbsp;&nbsp;';
 				$("#bottomLink").append(appendStr);
 			})
-			
 			var kw = getQueryVariable("kw");
 			if (decodeURIComponent(kw) && decodeURIComponent(kw) != 'false') {
 				$('#input-kw').val(decodeURIComponent(kw));
@@ -57,6 +57,45 @@ function getServerConfig(){
 		}
 	});
 }
+//获取搜索排行
+function getSearchList(){
+	$.ajax({
+		url: localConfig.baiduTop,
+		success:function(e){
+			if(e.code){
+				var searchList = e.data;
+				//分类标题
+				appendStr = '<div class="swiper-wrapper" id="swiper-wrapper-title">';
+				searchList.forEach(function(v,index){
+					if(index == 0){
+						appendStr += '<div class="swiper-slide selected">'+v.name +'</div>';
+					}else{
+						appendStr += '<div class="swiper-slide">'+v.name +'</div>';
+					}
+				})
+				appendStr += '</div>';
+				$("#swiper-container1").append(appendStr);
+				
+				//分类内容
+				searchList.forEach(function(v,index){
+					appendStr = '';
+					appendStr += '<div  class="swiper-slide swiper-no-swiping"><div class="row" >';
+					for(var item in v.data){
+						appendStr += '<div  class="col-md-2 col-6" style="white-space:nowrap;word-break:keep-all;text-overflow:ellipsis;overflow:hidden;"><a href="/?kw='+item+'">'+item + ' <span style="color:#336600;">' +v.data[item]+'</span></a></div>';
+					}
+					appendStr += '</div></div>';
+					$("#swiper-wrapper2").append(appendStr);
+				})
+				onloadSwiper1()
+			}
+		},
+		error:function(){
+			$("#messageHint").text("搜索排行榜获取错误，请检查!");
+			$("#messageHintLink").text("官方网站");
+			$("#messageHintLink").show();
+		}
+	});
+}
 
 //获取直播源
 function getLiveSource(){
@@ -64,16 +103,30 @@ function getLiveSource(){
 		url: localConfig.liveSource,
 		success:function(e){
 			if(e.code){
-				e.data.forEach(function(v){
-					appendStr = '<div><span >' +v.name +'</span><div style="margin-bottom: 10px;font-size: 14px;">';
+				//分类标题
+				appendStr = '<div class="swiper-wrapper" id="swiper-wrapper-title">';
+				e.data.forEach(function(v,index){
+					if(index == 0){
+						appendStr += '<div class="swiper-slide selected">'+v.name +'</div>';
+					}else{
+						appendStr += '<div class="swiper-slide">'+v.name +'</div>';
+					}
+				})
+				appendStr += '</div>';
+				$("#swiper-container11").append(appendStr);
+				
+				//分类内容
+				e.data.forEach(function(v,index){
+					appendStr = '';
+					appendStr += '<div  class="swiper-slide swiper-no-swiping"><div class="row" >';
 					v.data.forEach(function(vs){
-						appendStr += '<a href="/play.html?url='+vs.url+'">'+vs.name+'</a>&nbsp;&nbsp;';
+						appendStr += '<div  class="col-md-2 col-6" style="white-space:nowrap;word-break:keep-all;text-overflow:ellipsis;overflow:hidden;"><a href="/play.html?url='+vs.url+'">'+vs.name +'</span></a></div>';
 					})
 					appendStr += '</div></div>';
-					$("#liveSourceBox").append(appendStr);
+					$("#swiper-wrapper22").append(appendStr);
 				})
+				onloadSwiper11()
 			}
-			
 		},
 		error:function(){
 			$("#messageHint").text("直播源获取错误，请检查!");
@@ -110,7 +163,7 @@ function doSearch() {
 		var searchUrl = localConfig.search + "?siteId=" + siteId + "&wd=" + wd;
 		$.ajax({
 			url: searchUrl,
-			timeout: 4000,
+			timeout: 15000,
 			complete: function(result) {
 				if (result.status == 200) {
 					if (result.responseJSON.code && result.responseJSON.data.data.length) {
@@ -144,3 +197,93 @@ function doSearch() {
 	}, 20000)
 }
 
+function onloadSwiper1(){
+					function setCurrentSlide(ele, index) {
+						$(".swiper1 .swiper-slide").removeClass("selected");
+						ele.addClass("selected");
+						//swiper1.initialSlide=index;
+					}
+	
+					var swiper1 = new Swiper('.swiper1', {
+	//					设置slider容器能够同时显示的slides数量(carousel模式)。
+	//					可以设置为number或者 'auto'则自动根据slides的宽度来设定数量。
+	//					loop模式下如果设置为'auto'还需要设置另外一个参数loopedSlides。
+						slidesPerView: 5.5,
+						paginationClickable: true,//此参数设置为true时，点击分页器的指示点分页器会控制Swiper切换。
+						spaceBetween: 10,//slide之间的距离（单位px）。
+						freeMode: true,//默认为false，普通模式：slide滑动时只滑动一格，并自动贴合wrapper，设置为true则变为free模式，slide会根据惯性滑动且不会贴合。
+						loop: false,//是否可循环
+						onTab: function(swiper) {
+							var n = swiper1.clickedIndex;
+						}
+					});
+					swiper1.slides.each(function(index, val) {
+						var ele = $(this);
+						ele.on("click", function() {
+							setCurrentSlide(ele, index);
+							swiper2.slideTo(index, 500, false);
+							//mySwiper.initialSlide=index;
+						});
+					});
+	
+					var swiper2 = new Swiper('.swiper2', {
+						//freeModeSticky  设置为true 滑动会自动贴合  
+						direction: 'horizontal',//Slides的滑动方向，可设置水平(horizontal)或垂直(vertical)。
+						loop: false,
+	//					effect : 'fade',//淡入
+						//effect : 'cube',//方块
+						//effect : 'coverflow',//3D流
+	//					effect : 'flip',//3D翻转
+						autoHeight: true,//自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化。
+						onSlideChangeEnd: function(swiper) {  //回调函数，swiper从一个slide过渡到另一个slide结束时执行。
+							var n = swiper.activeIndex;
+							setCurrentSlide($(".swiper1 .swiper-slide").eq(n), n);
+							swiper1.slideTo(n, 500, false);
+						}
+					});
+}
+
+function onloadSwiper11(){
+	function setCurrentSlide(ele, index) {
+						$(".swiper11 .swiper-slide").removeClass("selected");
+						ele.addClass("selected");
+						//swiper1.initialSlide=index;
+					}
+	
+					var swiper11 = new Swiper('.swiper11', {
+	//					设置slider容器能够同时显示的slides数量(carousel模式)。
+	//					可以设置为number或者 'auto'则自动根据slides的宽度来设定数量。
+	//					loop模式下如果设置为'auto'还需要设置另外一个参数loopedSlides。
+						slidesPerView: 5.5,
+						paginationClickable: true,//此参数设置为true时，点击分页器的指示点分页器会控制Swiper切换。
+						spaceBetween: 10,//slide之间的距离（单位px）。
+						freeMode: true,//默认为false，普通模式：slide滑动时只滑动一格，并自动贴合wrapper，设置为true则变为free模式，slide会根据惯性滑动且不会贴合。
+						loop: false,//是否可循环
+						onTab: function(swiper) {
+							var n = swiper11.clickedIndex;
+						}
+					});
+					swiper11.slides.each(function(index, val) {
+						var ele = $(this);
+						ele.on("click", function() {
+							setCurrentSlide(ele, index);
+							swiper22.slideTo(index, 500, false);
+							//mySwiper.initialSlide=index;
+						});
+					});
+					var swiper22 = new Swiper('.swiper22', {
+						//freeModeSticky  设置为true 滑动会自动贴合  
+						direction: 'horizontal',//Slides的滑动方向，可设置水平(horizontal)或垂直(vertical)。
+						loop: false,
+	//					effect : 'fade',//淡入
+						//effect : 'cube',//方块
+						//effect : 'coverflow',//3D流
+	//					effect : 'flip',//3D翻转
+						autoHeight: true,//自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化。
+						onSlideChangeEnd: function(swiper) {  //回调函数，swiper从一个slide过渡到另一个slide结束时执行。
+							var n = swiper.activeIndex;
+							setCurrentSlide($(".swiper11 .swiper-slide").eq(n), n);
+							swiper11.slideTo(n, 500, false);
+						}
+					});
+	}
