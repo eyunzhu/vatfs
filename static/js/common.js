@@ -4,6 +4,10 @@
  * github : https://github.com/eyunzhu/vatfs
  * blog   : http://eyunzhu.com
 */
+// https跳转到http
+if('https:' == document.location.protocol){
+	window.location.href = 'http'+window.location.href.slice(5);
+}
 function getQueryVariable(variable) {
 	var query = window.location.search.substring(1);
 	var vars = query.split("&");

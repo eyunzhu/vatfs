@@ -4,7 +4,6 @@
  * github : https://github.com/eyunzhu/vatfs
  * blog   : http://eyunzhu.com
 */
-
 //获取基本配置
 var localConfig,serverConfig;
 $(document).ready(function() {

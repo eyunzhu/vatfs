@@ -26,8 +26,20 @@
 2. ThinkCMF插件安装
 	> 1. 将eyunzhu_vatfs文件夹放入ThinkCMF插件目录
 	> 2. 访问地址 ：域名/plugin/eyunzhu_vatfs/index/index
-**注意**
-`若站点是https请取消注释detail.html中的第九行`
+
+## 注意：
+若站点添加了ssl,请在`detail.html`,`play.html`页面的head部分加入下方代码(用于将http资源转为https资源)
+```
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+```
+并删除`static/js/common.js`中的下方代码（7-10行）
+```
+// https跳转到http
+if('https:' == document.location.protocol){
+	window.location.href = 'http'+window.location.href.slice(5);
+}
+```
+Ps:因部分资源站不支持https资源，所以本站不建议添加ssl
 
 ## 接口
 ### 1.搜索
