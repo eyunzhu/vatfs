@@ -1,24 +1,25 @@
 # vatfs (影视全搜索)
 > 提供全网m3u8影视资源(电影、动漫、电视剧、综艺等)搜索、直播源整理、资源播放
 
-	搜索结果融合十几个站点结果，高效率的找到影视资源(欢迎提交优质的m3u8资源站点)
-	从此看剧不用愁
+	搜索结果融合十几个站点结果，高效率的找到影视资源,从此看剧不用愁
+	(欢迎提交优质的m3u8资源站点)
+> **交流QQ群号:**490993740	
+> 有问题，或者建议，请提交 [issues](https://github.com/eyunzhu/vatfs/issues)
 ## 计划
 - [X] 各站点影视搜索接口
 - [X] 直播接口
 - [X] 搜索排行
-- [X] 独立站点
-- [ ] 小程序
-- [ ] android app
-- [ ] iOS app
+- [X] 独立站点 ➡️[影视全搜索](http://v.eyunzhu.com)
+- [ ] 小程序 (开发中)
+- [ ] android app (开发中)
+- [ ] iOS app (开发中)
 - [ ] 插件
 	- [X] ThinkCMF插件
 	- [ ] WordPress插件
 
 ## 演示
-1. GitHub Pages：[GitHub Pages 演示](https://eyunzhu.github.io/vatfs/)
-2. 普通站点演示： [影视全搜索](http://v.eyunzhu.com)
-3. ThinkCMF插件演示：[插件演示](https://tools.eyunzhu.com/plugin/eyunzhu_vatfs/index/index)
+1. 普通站点演示： [影视全搜索](http://v.eyunzhu.com)
+2. ThinkCMF插件演示：[插件演示](https://tools.eyunzhu.com/plugin/eyunzhu_vatfs/index/index)
 
 ## 安装使用
 1. 普通安装
