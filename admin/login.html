@@ -1,0 +1,132 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+-->
+<!DOCTYPE html>
+<html>
+	<block id="app" v-if="siteBaseInfo">
+		<title>登陆后台</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../static/css/style-v.css?1036w795373">
+		<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+		<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+		<nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+			<div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+					<img :src="siteBaseInfo.info.setting.logo" class="mr-2">{{siteBaseInfo.info.setting.siteTile}}</a>
+				<a href="/">首页</a>
+			</div>
+		</nav>
+		<div v-if="ewm" class="container mt-3" style="text-align: center;">
+			<h3>微信扫码登陆</h3>
+			<img :src="ewm" >
+			<p>请使用微信扫码登陆</p>
+			<p>
+				<a href="http://eyunzhu.com">powerd by 忆云竹</a> &nbsp;|&nbsp;
+				<a href="https://github.com/eyunzhu/vatfs">源码</a>
+			</p>
+		</div>
+<script type="text/javascript">
+	var info = "";
+	var token = "";
+	var num = 0;
+	var t,timer;
+	new Vue({
+		el: '#app',
+		data() {
+			return {
+				logo: 'http://v.eyunzhu.com/static/logo.png',
+				siteBaseInfo: '',
+				ewm:''
+			}
+		},
+		created() {
+			t = this;
+			t.getSiteBaseInfo();
+			t.getLoginInfoStr();
+			timer = setInterval(function() {
+				t.doItPerSecond();
+			}, 2000)
+		},
+
+		methods: {
+			//获取基本配置
+			getSiteBaseInfo: function() {
+				axios.get('http://api.eyunzhu.com/api/vatfs/index/getSiteBaseInfo')
+					.then(function(e) {
+						if (e.data.code == 1) {
+							t.siteBaseInfo = e.data.data
+							t.siteBaseInfo.info.setting.link.splice(0, 1)
+							t.link = JSON.stringify(t.siteBaseInfo.info.setting.link)
+						} else {
+							console.log('getSiteBaseInfo 获取失败')
+						}
+					})
+					.catch(function(error) {
+						console.log('getSiteBaseInfo', error);
+					});
+			},
+			getLoginInfoStr(){
+				axios.get('http://api.eyunzhu.com/api/vatfs/index/getLoginInfoStr')
+					.then(function(e) {
+						if (e.data.code == 1) {
+							info = e.data.data.info
+							token = e.data.data.token
+							t.getEWM()
+						} else {
+							console.log('getLoginInfoStr 获取失败')
+						}
+					})
+					.catch(function(error) { // 请求失败处理
+						console.log('getLoginInfoStr', error);
+					});
+			},
+			getEWM(){
+				axios.get('http://api.eyunzhu.com/api/gutu/index/qrcodeCreate?info='+info)
+					.then(function(e) {
+						if (e.data.code == 1) {
+							t.ewm = e.data.data.picUrl
+						} else {
+							console.log('qrcodeCreate 获取失败')
+						}
+					})
+					.catch(function(error) { // 请求失败处理
+						console.log('qrcodeCreate', error);
+					});
+			},
+			doItPerSecond(){
+				num++;
+				axios.get("https://api.eyunzhu.com/api/user/profile/userInfo",{
+						headers:{
+							'Content-Type': 'application/x-www-form-urlencoded',
+							'XX-Token': token,
+							'XX-Device-Type': 'web'
+						}
+					}).then(function(e) {
+						console.log('userInfo', e.data);
+						if (e.data.code == 1) {
+							console.log('userInfo', e.data);
+							clearInterval(timer);
+							localStorage.token = token;
+							window.location.href = 'index.html';
+						}
+						if (num > 50) {
+							clearInterval(timer);
+							alert('二维码已失效，请刷新');
+						}
+					})
+					.catch(function(error) { // 请求失败处理
+						console.log('userInfo', error);
+					});
+			}
+			
+		}
+	})
+</script>
+	</block>
+</html>

@@ -1,0 +1,215 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+-->
+<!DOCTYPE html>
+<html>
+<block id="app" v-if="siteBaseInfo" >
+	<title>后台</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/css/style-v.css?1036w795373">
+	<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+	<nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+		<div class="container" ><a class="navbar-dark logo" href="/" style="color: #000000;">
+			<img :src="siteBaseInfo.info.setting.logo"  class="mr-2" >{{siteBaseInfo.info.setting.siteTile}}</a>
+			<a href="/">首页</a>
+		</div>
+	</nav>
+	<div class="container mt-3">
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">logo</span></div>
+			<input  name="file" id='logoInput'  type="file" accept="image/png,image/gif,image/jpeg" @change="update" 
+				style="overflow: hidden;width: 0.1px;height: 0.1px;opacity: 0;overflow: hidden;position: absolute;z-index: -1;"/>
+			<label for="logoInput">
+				<img :src="siteBaseInfo.info.setting.logo" style="height:calc(1.5em + .75rem + 2px);padding-left:20px;">
+				<span style="margin-left:10px;font-size:12px;">点击图片上传</span>
+			</label>
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">siteTile</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.siteTile">
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">description</span></div>
+			<textarea type="text" class="form-control" v-model="siteBaseInfo.info.setting.description"></textarea>
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">searchTips</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.searchTips">
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">playTips</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.playTips">
+		</div>
+		<span v-show="linkTips" style="color:red;">link格式错误，请确认为json格式,如:<br/>[{"name":"忆云竹","url":"http://eyunzhu.com"}]</span>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">Link</span></div>
+			<input type="text" class="form-control" @input="inputLink" :value="link"/>
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">meta-title</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.meta.title">
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">meta-keywords</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.meta.keywords">
+		</div>
+		<div class="input-group mb-3">
+			<div class="input-group-prepend"><span class="input-group-text">meta-description</span></div>
+			<input type="text" class="form-control" v-model="siteBaseInfo.info.setting.meta.description">
+		</div>
+		<div style="text-align:center;">
+			<button v-on:click="submit" class="btn btn-primary">修改</button>
+			<button v-on:click="loginOut" class="btn btn-primary">登出</button>
+		</div>
+	 </div>
+<script type="text/javascript">
+	var token = localStorage.token;
+	if (isEmpty(token)) {
+		window.location.href = 'login.html';
+	}
+	var t;
+	new Vue({
+		el: '#app',
+		data() {
+			return {
+				logo: 'http://v.eyunzhu.com/static/logo.png',
+				siteBaseInfo: '',
+				link: '', //友情链接
+				linkTips: false,
+			}
+		},
+		created() {
+			t = this;
+			t.getSiteBaseInfo()
+		},
+
+		methods: {
+			showData() {
+				console.log(t.siteBaseInfo);
+			},
+			inputLink(e) {
+				t.link = e.currentTarget.value
+				// t.link = JSON.parse(t.link);
+				console.log(t.link)
+				if (t.isJSON(t.link)) { //	是json格式
+					t.linkTips = false
+					t.siteBaseInfo.info.setting.link = JSON.parse(t.link)
+				} else {
+					t.linkTips = true
+				}
+
+			},
+			isJSON(str) {
+				if (typeof str == 'string') {
+					try {
+						var obj = JSON.parse(str);
+						if (typeof obj == 'object' && obj) {
+							return true;
+						} else {
+							return false;
+						}
+
+					} catch (e) {
+						console.log('error：' + str + '!!!' + e);
+						return false;
+					}
+				}
+				console.log('It is not a string!')
+			},
+			//获取基本配置
+			getSiteBaseInfo: function() {
+				axios.get('http://api.eyunzhu.com/api/vatfs/index/getSiteBaseInfo')
+					.then(function(e) {
+						if (e.data.code == 1) {
+							t.siteBaseInfo = e.data.data
+							//delete(t.siteBaseInfo.info.setting.link[0])
+							t.siteBaseInfo.info.setting.link.splice(0, 1)
+							t.link = JSON.stringify(t.siteBaseInfo.info.setting.link)
+							console.log('siteBaseInfo', t.siteBaseInfo)
+						} else {
+							console.log('getSiteBaseInfo 获取失败')
+						}
+					})
+					.catch(function(error) { // 请求失败处理
+						console.log('getSiteBaseInfo', error);
+					});
+			},
+			update(e) {
+				let file = e.target.files[0];
+				let param = new FormData(); //创建form对象
+				param.append('file', file); //通过append向form对象添加数据
+				console.log(param.get('file')); //FormData私有类对象，访问不到，可以通过get判断值是否传进去
+				let config = {
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						'XX-Token': token,
+						'XX-Device-Type': 'web'
+					}
+				};
+				axios.post('https://api.eyunzhu.com/api/user/upload/one', param, config)
+					.then(function(e) {
+						console.log(e.data)
+						if (e.data.code == 1) {
+							t.siteBaseInfo.info.setting.logo = e.data.data.web_url
+						} else {
+							console.log('upload 失败')
+							alert('登陆已失效,请重新登陆');
+							window.location.href = 'login.html';
+						}
+					})
+					.catch(function(error) { // 请求失败处理
+						console.log('getSiteBaseInfo', error);
+					});
+			},
+			submit() {
+				if (!t.linkTips) {
+					console.log(t.siteBaseInfo)
+					var config = {
+						headers: {
+							'Content-Type': 'multipart/form-data',
+							'XX-Token': token,
+							'XX-Device-Type': 'web'
+						}
+					};
+					axios.post('http://api.eyunzhu.com/api/vatfs/admin/saveSiteInfo', t.siteBaseInfo, config)
+						.then(function(e) {
+							console.log(e.data)
+							if (e.data.code == 1) {
+								alert('修改成功');
+							} else {
+								console.log('saveSiteInfo 失败')
+								alert('登陆已失效,请重新登陆');
+								window.location.href = 'login.html';
+							}
+						})
+						.catch(function(error) { // 请求失败处理
+							console.log('saveSiteInfo', error);
+						});
+				}
+
+			},
+			loginOut() {
+				localStorage.clear();
+				window.location.href = 'login.html';
+			}
+		}
+	})
+
+	function isEmpty(obj) {
+		if (typeof obj == "undefined" || obj == null || obj == "") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
+ </block>
+ </html>

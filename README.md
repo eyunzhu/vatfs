@@ -16,13 +16,14 @@
 - [ ] 插件
 	- [X] ThinkCMF插件
 	- [ ] WordPress插件
+- [X] 管理后台(应网友要求，已添加微信扫码登陆后台)
 
 ## 演示
 1. 普通站点演示： [影视全搜索](http://v.eyunzhu.com)
 2. ThinkCMF插件演示：[插件演示](https://tools.eyunzhu.com/plugin/eyunzhu_vatfs/index/index)
 
 ## 安装使用
-1. 普通安装
+1. 普通安装 [点我下载最新版](https://github.com/eyunzhu/vatfs/archive/master.zip)
 	> 下载文件放入网站根目录访问`index.html`即可
 2. ThinkCMF插件安装
 	> 1. 将eyunzhu_vatfs文件夹放入ThinkCMF插件目录
