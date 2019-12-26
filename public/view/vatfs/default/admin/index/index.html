@@ -1,0 +1,143 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+ * 欢迎交流使用本程序，但请保留版权
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{siteBaseConfig['title']}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{siteBaseConfig['meta']['keywords']}}">
+    <meta name="description" content="{{siteBaseConfig['meta']['description']}}">
+    <meta name="author" content="忆云竹" />
+    <meta name="copyright" content="Copyright 2019 忆云竹 All rights Reserved" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/style-v.css">
+
+    <script src="{{__TMPL__}}/static/js/jquery2.1.4.min.js"></script>
+    <script src="{{__TMPL__}}/static/js/sweetalert.min.js"></script>
+
+</head>
+<body>
+<!--顶部导航-->
+<nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+    <div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+        <img  src="{{siteBaseConfig['logo']}}" class="mr-2">{{siteBaseConfig['title']}}</a>
+        {% if siteBaseConfig['navRight']['status'] == true %}
+        <a href="{{siteBaseConfig['navRight']['url']}}" target="_blank">{{siteBaseConfig['navRight']['name']}}</a>
+        {% endif %}
+    </div>
+</nav>
+<div class="container">
+    <form action="/admin" method="post" onsubmit="return judge()">
+        <div class="input-group mb-2 mt-3">
+            <div class="input-group-prepend"><span class="input-group-text">logo</span></div>
+            <input id='logoInput'  type="file" accept="image/png,image/gif,image/jpeg" onchange="upload()"
+                    style="overflow: hidden;width: 0.1px;height: 0.1px;opacity: 0;overflow: hidden;position: absolute;z-index: -1;"/>
+            <input name="logo" id="logo" type="text" hidden value="{{siteBaseConfig['logo']}}">
+            <label for="logoInput">
+                <img id="logoImg" src="{{siteBaseConfig['logo']}}" style="height:calc(1.5em + .75rem + 2px);padding-left:20px;">
+                <span style="margin-left:10px;font-size:12px;">点击图片上传</span>
+            </label>
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">title</span></div>
+            <input name="title" type="text" class="form-control" value="{{siteBaseConfig['title']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">keywords</span></div>
+            <input name="keywords" type="text" class="form-control" value="{{siteBaseConfig['meta']['keywords']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">description</span></div>
+            <input name="description" type="text" class="form-control" value="{{siteBaseConfig['meta']['description']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">searchTips</span></div>
+            <input name="searchTips" type="text" class="form-control" value="{{siteBaseConfig['searchTips']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">siteDescribe</span></div>
+            <input name="siteDescribe" type="text" class="form-control" value="{{siteBaseConfig['siteDescribe']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">searchApi</span></div>
+            <input name="searchApi" type="text" class="form-control" value="{{siteBaseConfig['searchApi']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">detailApi</span></div>
+            <input name="detailApi" type="text" class="form-control" value="{{siteBaseConfig['detailApi']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">navRight</span></div>
+            <input name="navRight" type="text" class="form-control" value="{{navRight}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">link</span></div>
+            <input name="link" type="text" class="form-control" value="{{link}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">user</span></div>
+            <input name="user" id="user" type="text" class="form-control" value="{{siteBaseConfig['user']}}" >
+        </div>
+        <div class="input-group mb-2">
+            <div class="input-group-prepend"><span class="input-group-text">password</span></div>
+            <input name="password" id="password" type="password" class="form-control" placeholder="填则修改密码" >
+        </div>
+        <div style="text-align:center;">
+            <button type="submit" class="btn btn-primary">修改</button>
+            <button type="button" onclick="loginOut()" class="btn btn-primary">登出</button>
+        </div>
+    </form>
+    <!--欢迎交流使用 请勿删除版权-->
+    <p class="mt-4 mb-3 text-muted">
+        Powered By <a href="https://github.com/eyunzhu/vatfs" class="text-muted" target="_blank">vatfs</a>.
+        Copyright 2019 <a href="http://eyunzhu.com" class="text-muted" target="_blank">忆云竹</a> All rights Reserved.
+    </p>
+</div>
+</body>
+<script>
+    function upload() {
+        let file = $("#logoInput")[0].files[0];//e.target.files[0];
+        let param = new FormData(); //创建form对象
+        param.append('file', file); //通过append向form对象添加数据
+        $.ajax({
+            url:'/index/index/uploadFile',
+            type:'post',
+            data: param,
+            contentType: false,
+            processData: false,
+            success:function(e){
+                e = JSON.parse(e);
+                $("#logoImg").attr('src',e.data);
+                $("#logo").val(e.data)
+            }
+        })
+    }
+    function judge() {
+        userName = $("#user").val();
+        passWord = $("#password").val();
+        if(userName.length >=5 && (passWord.length>=5 || passWord.length==0)){
+            return true;
+        }else {
+            swal(
+                '登陆失败',
+                '账号密码不得少于5位',
+                'warning'
+            );
+            return false;
+        }
+    }
+    function loginOut() {
+        window.location.href = '/admin/index/LoginOut';
+    }
+</script>
+
+</html>

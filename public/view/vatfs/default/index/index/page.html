@@ -1,0 +1,31 @@
+{% macro paging(page, max, url, num = 5) %}
+{% if page < 1 %}{% set page = 1 %}{% endif %}
+{% if page > max %}{% set page = max %}{% endif %}
+{% set jianju = (num / 2)|round %}
+<ul class="pagination pagination-sm">
+    <li {% if page == 1 %}class="page-item disabled"{% endif %}><a class="page-link" {% if page != 1 %}href="{{ url }}1"{% endif %} aria-label="Previous"><span aria-hidden="true">首</span></a></li>
+    <li {% if page < 2 %}class="page-item disabled"{% endif %}><a class="page-link" {% if page >= 2 %}href="{{ url }}{{ page - 1 }}"{% endif %} aria-label="Previous"><span aria-hidden="true">上</span></a></li>
+    {% if max <= num %}
+    {% for ii in 1..max %}
+    <li {% if page == ii %}class="page-item active"{% endif %}><a class="page-link" href="{{ url }}{{ ii }}">{{ ii }}</a></li>
+    {% endfor %}
+    {% endif %}
+    {% if max > num and page <= num and page < jianju %}
+    {% for ll in 1..num %}
+    <li {% if page == ll %}class="page-item active"{% endif %}><a class="page-link" href="{{ url }}{{ ll }}">{{ ll }}</a></li>
+    {% endfor %}
+    {% endif %}
+    {% if max > num and (page - jianju) >= 0 and (page + jianju) <= max %}
+    {% for jj in (page - jianju + 1)..(page + jianju - 1) %}
+    <li {% if page == jj %}class="page-item active"{% endif %}><a class="page-link" href="{{ url }}{{ jj }}">{{ jj }}</a></li>
+    {% endfor %}
+    {% endif %}
+    {% if max > num and page > (max - jianju) %}
+    {% for kk in (max - num + 1)..max %}
+    <li {% if page == kk %}class="page-item active"{% endif %}><a class="page-link" href="{{ url }}{{ kk }}">{{ kk }}</a></li>
+    {% endfor %}
+    {% endif %}
+    <li {% if page+1 > max %}class="page-item disabled"{% endif %}><a class="page-link" {% if page+1 <= max %}href="{{ url }}{{ page + 1 }}"{% endif %}  aria-label="Next"><span aria-hidden="true">下</span></a></li>
+    <li {% if page == max %}class="page-item disabled"{% endif %}><a class="page-link" {% if page != max %}href="{{ url }}{{ max }}"{% endif %} aria-label="Previous"><span aria-hidden="true">尾</span></a></li>
+</ul>
+{% endmacro %}

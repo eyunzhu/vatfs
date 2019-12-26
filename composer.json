@@ -1,0 +1,26 @@
+{
+    "require": {
+        "catfan/medoo": "^1.7",
+        "filp/whoops": "^2.5",
+        "twig/twig": "^3.0",
+        "twbs/bootstrap": "^4.3",
+        "workerman/gateway-worker": "^3.0",
+        "workerman/gatewayclient": "^3.0",
+        "webgeeker/validation":"^0.4",
+        "aliyuncs/oss-sdk-php": "^2.3"
+    },
+    "scripts": {
+        "post-update-cmd": [
+            "rm -rf public/static/bootstrap",
+            "mkdir -p public/static/bootstrap",
+            "cp -R vendor/twbs/bootstrap/dist public/static/bootstrap",
+            "rm -rf vendor/twbs"
+        ],
+        "post-install-cmd": [
+            "rm -rf public/static/bootstrap",
+            "mkdir -p public/static/bootstrap",
+            "cp -R vendor/twbs/bootstrap/dist public/static/bootstrap",
+            "rm -rf vendor/twbs"
+        ]
+    }
+}

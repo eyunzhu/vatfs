@@ -1,0 +1,29 @@
+{
+    "name": "webgeeker/validation",
+    "description": "Validation for WebGeeker",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "photondragon",
+            "email": "photondragon@163.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WebGeeker\\Validation\\": "src/Validation/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WebGeeker\\ValidationTest\\": "tests/Validation/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "ext-mbstring": "*"
+    }
+}

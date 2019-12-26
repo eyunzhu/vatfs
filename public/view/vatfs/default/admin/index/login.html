@@ -1,0 +1,81 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+ * 欢迎交流使用本程序，但请保留版权
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{siteBaseConfig['title']}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{siteBaseConfig['meta']['keywords']}}">
+    <meta name="description" content="{{siteBaseConfig['meta']['description']}}">
+    <meta name="author" content="忆云竹" />
+    <meta name="copyright" content="Copyright 2019 忆云竹 All rights Reserved" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet" >
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/style-v.css">
+    <script src="{{__TMPL__}}/static/js/sweetalert.min.js"></script>
+</head>
+<body>
+    <!--顶部导航-->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+        <div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+            <img src="{{siteBaseConfig['logo']}}" class="mr-2">{{siteBaseConfig['title']}}</a>
+            {% if siteBaseConfig['navRight']['status'] == true %}
+            <a href="{{siteBaseConfig['navRight']['url']}}" target="_blank">{{siteBaseConfig['navRight']['name']}}</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container-fluid mt-5 text-center">
+        <form id="loginForm" class="form-signin" method="post" action="/admin/index/login" onsubmit="return judge()" >
+            <div class="row">
+                <div class="col-sm-8 offset-sm-2 col-md-4 offset-md-4 mt-5">
+                    <h1 class="h3 mb-3 font-weight-normal">管理后台登陆</h1>
+                    <label for="inputUserName" class="sr-only">User name</label>
+                    <input type="Text" id="inputUserName" name="userName" class="form-control " placeholder="User name" required autofocus>
+                    <label for="inputPassWord" class="sr-only">Password</label>
+                    <input type="password" id="inputPassWord" name="passWord" class="form-control mt-3" placeholder="Password" required>
+                    <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">登陆</button>
+                </div>
+            </div>
+        </form>
+        <!--欢迎交流使用 请勿删除版权-->
+        <p class="mt-4 mb-3 text-muted">
+            Powered By <a href="https://github.com/eyunzhu/vatfs" class="text-muted" target="_blank">vatfs</a>.
+            Copyright 2019 <a href="http://eyunzhu.com" class="text-muted" target="_blank">忆云竹</a> All rights Reserved.
+        </p>
+    </div>
+</body>
+<script src="{{__TMPL__}}/static/js/jquery2.1.4.min.js"></script>
+<script src="{{__TMPL__}}/static/js/common.js"></script>
+<script>
+    {% if loginStatus == 'error' %}
+    swal(
+        '登陆失败',
+        '账号密码错误',
+        'error'
+    );
+    {% endif %}
+    function judge() {
+        userName = $("#inputUserName").val();
+        passWord = $("#inputPassWord").val();
+
+        if(userName.length >=5 && passWord.length>=5){
+            return true;
+        }else {
+            swal(
+                '登陆失败',
+                '账号密码不得少于5位',
+                'warning'
+            );
+            return false;
+        }
+    }
+</script>
+</html>

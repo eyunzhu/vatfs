@@ -1,0 +1,156 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+ * 欢迎交流使用本程序，但请保留版权
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{siteBaseConfig['title']}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{siteBaseConfig['meta']['keywords']}}">
+    <meta name="description" content="{{siteBaseConfig['meta']['description']}}">
+    <meta name="author" content="忆云竹" />
+    <meta name="copyright" content="Copyright 2019 忆云竹 All rights Reserved" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/style-v.css">
+    <script src="{{__TMPL__}}/static/js/jquery2.1.4.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+        <div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+            <img src="{{siteBaseConfig['logo']}}" class="mr-2">{{siteBaseConfig['title']}}</a>
+            {% if siteBaseConfig['navRight']['status'] == true %}
+            <a href="{{siteBaseConfig['navRight']['url']}}" target="_blank">{{siteBaseConfig['navRight']['name']}}</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        <form action="/search" method="get">
+            <div class="row">
+                <div class="col-12 py-3">
+                    <div class="input-group my-3">
+                        <input id="input-kw" required name="kw" type="text" class="form-control nice" value="{{kw}}" placeholder="{{kw|default(siteBaseConfig['searchPlaceholder'])}}" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark px-1 play border-0" type="submit"><img src="{{__TMPL__}}/static/search.png"  height="24"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="font-size: 14px;color:#697389">tips:
+            {% autoescape false %}
+            {{siteBaseConfig['searchTips']}}
+            {% endautoescape %}
+        </div>
+        <!--搜索结果-->
+        <dev class="row">
+            <div  class="col-12">
+                <div class="nice-c" style="font-size: 14px;color:#697389">
+                    搜索结果：共{{searchResult['total']}}项 {{searchResult['last_page']}}页</div>
+                <div id="urlblock1" class="row mr-0">
+                    {% for k,v in searchResult['data'] %}
+                    <div  class="col-md-3 col-ms-4 col-12 pr-0 mb-0">
+                        <a href="detail/{{v['vid']}}.html" target="_blank">
+                            <div style="margin-top: 10px;height: 100px;">
+                                <div style="margin-right: 9px; height: 100%;width: 76.28px;float: left;">
+                                    <div style="position: absolute;width: 76.28px;border-radius: 2px;color: yellow;background: #727988;font-size: 12px;">
+                                        {{v['label']}}
+                                    </div>
+                                    <img data-src="{{v['pic']}}" src="" style="height: 100%;width: 76.28px;background-image: url('https://pane.oss-cn-beijing.aliyuncs.com/static/project/pahei/img/bg.jpg');background-size: cover;background-position:50% 50%;"/>
+                                </div>
+                                <div style="height: 100%;">
+                                    <div>
+                                        {{v['name']}}
+                                    </div>
+                                    <div style="font-size: 12px;color:#697389">
+                                        站点:<span style="color: red;font-size: 18px;">{{v['siteId']}}</span>
+                                    </div>
+                                    <div style="font-size: 12px;color:#697389">
+                                        {{ v['updateTime']|date("y-m-d H:i:s") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </dev>
+        <div class="mt-2">
+            {% import 'page.html' as imports %}
+            {{ imports.paging(page, max, "/search/"~kw~"/", 5)}}
+        </div>
+
+        <!--友情链接-->
+        <div class="mt-2 mb-4 " >
+            {% for v in siteBaseConfig['link'] %}
+            <a class="text-muted" href="{{v.url}}" target="_blank">{{v.name}}</a>
+            {% endfor %}
+        </div>
+        <!--欢迎交流使用 请勿删除版权-->
+        <p class="mt-4 mb-3 text-muted text-right">
+            Powered By <a href="https://github.com/eyunzhu/vatfs" class="text-muted" target="_blank">vatfs</a>.
+            Copyright 2019 <a href="http://eyunzhu.com" class="text-muted" target="_blank">忆云竹</a> All rights Reserved.
+        </p>
+    </div>
+</body>
+<script src="{{__TMPL__}}/static/js/common.js"></script>
+<script>
+    //滚动事件
+    start () //打开页面 调用一次
+    $(window).on('scroll',function(){
+        start () //滚动页面是 调用一次   方便管理
+    })
+    //加载函数
+    function start (){
+        $('.container img').not('[data-isLoaded]').each(function(){
+            var $node = $(this)
+            if( isShow( $node) ){
+                //缓冲效果
+                setTimeout(function(){
+                    loadIng( $node)
+                },500)
+            }
+        })
+    }
+    // 页面逻辑
+    function isShow($node){
+        // 当一个元素出现在我们眼前    小于 窗口高度 加上窗口滚动的高度的时候    就意味着  到达目标点
+        // 可以开始加载图片 或者其他内容
+        return $node.offset().top <= $(window).height() + $(window).scrollTop()
+    }
+    // 显示状态
+    function loadIng($img){
+        // 获取目标元素 并替换
+        $img.attr('src', $img.attr('data-src'))
+        //性能优化   进行判断   已经加载的  不会再进行加载
+        $img.attr('data-isLoaded', 1)
+    }
+    document.onreadystatechange = subSomething;//当页面加载状态改变的时候执行这个方法.
+    function subSomething()
+    {
+        setTimeout(function(){
+            window.scrollTo(0, 0);
+        },100)
+    }
+    $('input').on('blur',function(){
+        window.scroll(0, 0);
+        setTimeout(function(){
+            window.scrollTo(0, 0)
+        },100)
+    })
+    function hideKeyBored(){
+        setTimeout(function(){
+            window.scrollTo(0, 0)
+            return true;
+        },100)
+    }
+</script>
+</html>

@@ -1,2 +1,7 @@
 .DS_Store
 .user.ini
+.git
+.DS_Store
+.project
+.idea
+runtime

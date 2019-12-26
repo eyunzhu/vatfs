@@ -1,0 +1,264 @@
+{
+    "siteRuleArr": [
+        {
+            "siteId": 0,
+            "status": 1,
+            "siteName": "看看资源",
+            "domain": "http:\/\/kankanzy.com",
+            "collectUrl_a": "http:\/\/kankanzy.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<\/a>#",
+            "detailPage": {
+                "name": "#<!--片名开始-->(?<name>.*?)<!--片名结束-->#",
+                "playUrl": "#name=\"copy_sel\" value=\"(?<playUrl>https:\/\/.*?m3u8)\" checked=\"\" \/>(?<playName>.*?)\\$#",
+                "explodeStr": [
+                    "来源：131m3u8",
+                    "直接复制链接"
+                ],
+                "pic": "#<img class=\"lazy\" src=\"(?<pic>.*?)\" alt#",
+                "updateTime": "#<li>更新：<span>(?<updateTime>.*?)<\/span><\/li>#",
+                "detailId": "#,SiteId='(?<detailId>.*?)';#",
+                "mName": "#<!--备注开始-->(?<mName>.*?)<!--备注结束-->#",
+                "type": "#<!--类型开始-->(?<type>.*?)<!--类型结束-->#"
+            }
+        },
+        {
+            "siteId": 1,
+            "status": 1,
+            "siteName": "八戒资源",
+            "domain": "http:\/\/zy.bajieziyuan.com",
+            "collectUrl_a": "http:\/\/zy.bajieziyuan.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "影片列表开始",
+                "影片列表结束"
+            ],
+            "detailUrlRule": "#<td class=\"l\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<fo#",
+            "detailPage": {
+                "name": "#<!--片名开始-->(?<name>.*?)<!--片名结束-->#",
+                "playUrl": "#name=\"copy_sel\" value=\"(?<playName>.*?)\\$(?<playUrl>.*?m3u8)\"#",
+                "explodeStr": [
+                    "<!--前bjm3u8-->",
+                    "<!--后bjm3u8-->"
+                ],
+                "pic": "#<!--图片开始--><img src=\"(?<pic>.*?)\"\/><!--图片结束-->#",
+                "updateTime": "#<!--时间开始-->(?<updateTime>.*?)<!--时间结束-->#",
+                "detailId": "#,SiteId='(?<detailId>.*?)';#",
+                "mName": "#<!--备注开始-->(?<mName>.*?)<!--备注结束-->#",
+                "type": "#<!--栏目开始-->(?<type>.*?)<!--栏目结束-->#"
+            }
+        },
+        {
+            "siteId": 2,
+            "status": 1,
+            "siteName": "速播资源",
+            "domain": "http:\/\/www.subo988.com",
+            "collectUrl_a": "http:\/\/www.subo988.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#checked=\"\" \/>(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/li> #",
+                "explodeStr": [
+                    "subom3u8",
+                    "全选"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "# <span>(?<mName>.*?)<\/span>\\s#",
+                "type": "#<li>类型：<span>(?<type>.*?)<#"
+            }
+        },
+        {
+            "siteId": 3,
+            "status": 1,
+            "siteName": "豆瓣",
+            "domain": "http:\/\/douban666.com",
+            "collectUrl_a": "http:\/\/douban666.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "title=\"伦理类\"",
+                "pagelink_a"
+            ],
+            "detailUrlRule": "#src=\"\/template\/ziyuan\/images\/pic\/new.gif\" \/>(?<vName>.*?)<\/a><span class=\"region\">(.*?)<\/span><a href=\"(?<pUrl>.*?)\" class#",
+            "detailPage": {
+                "name": "#class=\"whitetitle\">影片名称：(?<name>.*?)<#",
+                "playUrl": "#_blank\">(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/a>#",
+                "explodeStr": [
+                    "来源：dbm3u8",
+                    "下载地址"
+                ],
+                "pic": "#class=\"left\"><img src=\"(?<pic>.*?)\">#",
+                "updateTime": "#更新时间：(?<updateTime>.*?)<#",
+                "detailId": "#\/?m=vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "#上映年份：(?<mName>.*?)<#",
+                "type": "#影片类型：<a href=\"(.*?)\">(?<type>.*?)<\/a>#"
+            }
+        },
+        {
+            "siteId": 4,
+            "status": 1,
+            "siteName": "酷播资源",
+            "domain": "http:\/\/www.kubozy.net",
+            "collectUrl_a": "http:\/\/www.kubozy.net\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">\\s\\s\\t(?<vName>.*?)<\/#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#checked=\"\" \/>(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/li> #",
+                "explodeStr": [
+                    "kakam3u8",
+                    "全选"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "# <span>(?<mName>.*?)<\/span>\\s#",
+                "type": "#<li>类型：<span>(?<type>.*?)<#"
+            }
+        },
+        {
+            "siteId": 5,
+            "status": 1,
+            "siteName": "最大资源",
+            "domain": "http:\/\/www.zuidazy2.net",
+            "collectUrl_a": "http:\/\/www.zuidazy2.net\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<\/a>#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#checked=\"\" \/>(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/li> #",
+                "explodeStr": [
+                    "zuidam3u8",
+                    "zuidall"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "# <span>(?<mName>.*?)<\/span>\\s#",
+                "type": "#<li>类型：<span>(?<type>.*?) <#"
+            }
+        },
+        {
+            "siteId": 6,
+            "status": 1,
+            "siteName": "135资源",
+            "domain": "http:\/\/135zy0.com",
+            "collectUrl_a": "http:\/\/135zy0.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb\"",
+                "pagelink_a"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<\/a>#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#checked=\"\" \/>(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/li>#",
+                "explodeStr": [
+                    "135m3u8",
+                    "全选"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "#<\/h2><span>(?<mName>.*?)<\/span>#",
+                "type": "#<li>类型：<span>(?<type>.*?)<\/span>#"
+            }
+        },
+        {
+            "siteId": 7,
+            "status": 0,
+            "siteName": "",
+            "domain": "http:\/\/www.ziyuanpian.net",
+            "collectUrl_a": "http:\/\/www.ziyuanpian.net\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<\/a>#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#checked=\"\" \/>(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/li>#",
+                "explodeStr": [
+                    "ckm3u8",
+                    "全选"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "# <span>(?<mName>.*?)<\/span>\\s#",
+                "type": "#<li>类型：<span>(?<type>.*?)<#"
+            }
+        },
+        {
+            "siteId": 8,
+            "status": 0,
+            "siteName": "哈酷",
+            "domain": "http:\/\/www.haku77.com",
+            "collectUrl_a": "http:\/\/www.haku77.com\/?m=vod-index-pg-",
+            "collectUrl_b": ".html",
+            "explodeStr": [
+                "xing_vb1",
+                "底部截取标签"
+            ],
+            "detailUrlRule": "#class=\"xing_vb4\"><a href=\"(?<pUrl>.*?)\" target=\"_blank\">(?<vName>.*?)<f#",
+            "detailPage": {
+                "name": "#<h2>(?<name>.*?)<\/h2>#",
+                "playUrl": "#target=\"_blank\">(?<playName>.*?)\\$(?<playUrl>.*?m3u8)<\/a>#",
+                "explodeStr": [
+                    "结束",
+                    "底部截取标签"
+                ],
+                "pic": "#class=\"lazy\" src=\"(?<pic>.*?)\" al#",
+                "updateTime": "#更新：<span>(?<updateTime>.*?)<\/sp#",
+                "detailId": "#vod-detail-id-(?<detailId>.*?).html#",
+                "mName": "#h2>\\s\\s\\s\\s\\s\\s\\s\\s\\s\\s<span>(?<mName>.*?)<\/span>#",
+                "type": "#<li>类型：<span>(?<type>.*?)<#"
+            }
+        },
+        {
+            "siteId": 9,
+            "status": 1,
+            "siteName": "卧龙",
+            "domain": "https:\/\/wolongzy.net",
+            "collectUrl_a": "https://wolongzy.net\/?page=",
+            "collectUrl_b": "",
+            "explodeStr": [
+                "更新时间",
+                "pagination"
+            ],
+            "detailUrlRule": "#class=\"videoName\" href=\"(?<pUrl>.*?)\" target=\"_blank\" style=\"width:370px;\">\\s\\s(?<vName>.*?)&nbsp#",
+            "detailPage": {
+                "name": "#<title>\\s\\s(?<name>.*?)(\\[(.*?))?-#",
+                "playUrl": "#id=\"m3u8\" type=\"checkbox\" value=\"(?<playName>.*?)\\$(?<playUrl>.*?m3u8)\" checked#",
+                "explodeStr": [
+                    "WLm3u8",
+                    "\"cm3u8"
+                ],
+                "pic": "#class=\"left\">\\s\\s\\s\\s\\s<img src=\"(?<pic>.*?)\"#",
+                "updateTime": "#>更新时间：(?<updateTime>.*?)</p>#",
+                "detailId": "#var id=\"(?<detailId>.*?)\"#",
+                "mName": "#\\[(?<mName>.*?)\\]-#",
+                "type": "#类型：<a href=\"(.*?)\">(?<type>.*?)</a></p>#"
+            }
+        }
+    ]
+}

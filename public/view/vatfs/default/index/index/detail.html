@@ -1,0 +1,176 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+ * 欢迎交流使用本程序，但请保留版权
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{siteBaseConfig['title']}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{siteBaseConfig['meta']['keywords']}}">
+    <meta name="description" content="{{siteBaseConfig['meta']['description']}}">
+    <meta name="author" content="忆云竹" />
+    <meta name="copyright" content="Copyright 2019 忆云竹 All rights Reserved" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/video-js.min.css">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/style-v.css">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/DPlayer.min.css">
+    <script src="{{__TMPL__}}/static/js/DPlayer.min.js"></script>
+    <script src="{{__TMPL__}}/static/js/hls.min.js"></script>
+</head>
+<body>
+    <!--顶部导航-->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+        <div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+            <img src="{{siteBaseConfig['logo']}}" class="mr-2">{{siteBaseConfig['title']}}</a>
+            {% if siteBaseConfig['navRight']['status'] == true %}
+            <a href="{{siteBaseConfig['navRight']['url']}}" target="_blank">{{siteBaseConfig['navRight']['name']}}</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        <div>
+            {{detailResult['name']}}-在线播放<span id="play-title" class="pl-2"></span><span id="play-status" class="pl-2"></span>
+        </div>
+        <div style="width:100%;position:relative;padding-bottom:56.25%;height: 0;">
+            <div id="dplayer" style="position: absolute;top:0;left: 0;width: 100%;height: 100%"></div>
+        </div>
+        <div class="row" >
+            <div class="col-12 py-0" style="padding-top:0 !important">
+                <div class="input-group my-1">
+                    <input id="video-url" required name="play" type="text" class="form-control nice" placeholder="输入 M3U8 URL 地址"
+                           value="" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button id="play-url" class="btn btn-dark px-1 play border-0" type="button"><img src="{{__TMPL__}}/static/play-v.png"
+                                                                                                         height="24"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <marquee v-html="siteInfo.playTips"></marquee>
+        <div class="row nice-c">
+            <div class="col"><h5>播放列表</h5></div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div id="play-list" class="row mr-0">
+                    {% for k,v in detailResult['playUrl'] %}
+                    <div class="col-md-1 col-3 pr-0 mb-0">
+                        <button id="playList{{loop.index-1}}" onclick="play('{{v}}','{{k}}','{{loop.index-1}}')"
+                                type="button" class="btn btn-info" style="margin:4px 0px;padding:2px;">{{k}}</button>
+                    </div>
+                    {% endfor %}
+            </div>
+            <!--友情链接-->
+            <div class="mt-4 mb-4 " >
+                {% for v in siteBaseConfig['link'] %}
+                <a class="text-muted" href="{{v.url}}" target="_blank">{{v.name}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+        <!--欢迎交流使用 请勿删除版权-->
+        <p class="mt-4 mb-3 text-muted text-right">
+            Powered By <a href="https://github.com/eyunzhu/vatfs" class="text-muted" target="_blank">vatfs</a>.
+            Copyright 2019 <a href="http://eyunzhu.com" class="text-muted" target="_blank">忆云竹</a> All rights Reserved.
+        </p>
+    </div>
+</body>
+<script src="{{__TMPL__}}/static/js/jquery2.1.4.min.js"></script>
+<script src="{{__TMPL__}}/static/js/common.js"></script>
+<script>
+    var playListId = 0;
+    $("#playList0").removeClass("btn btn-info");
+    $("#playList0").addClass("btn btn-primary");
+    dp= new DPlayer({
+        container: document.getElementById('dplayer'),
+        autoplay: true,
+        theme: '#FADFA3',
+        loop: true,
+        lang: 'zh-cn',
+        screenshot: true,
+        hotkey: true,
+        preload: 'auto',
+        logo: '{{__TMPL__}}/static/ysqss.ico',
+        volume: 0.7,
+        mutex: true,
+        video: {
+            url: "{{playUrl}}",
+            type: 'auto'
+        },
+        subtitle: {
+            url: "{{__TMPL__~'/static/css/sdetail.v?'}}"+Date.parse(new Date()),
+            type: 'webvtt',
+            fontSize: '25px',
+            bottom: '7%',
+            color: '#b7daff',
+        },
+        contextmenu: [
+            {
+                text: '忆云竹',
+                link: 'http://eyunzhu.com'
+            },
+        ],
+        highlight: [
+            {
+                time: 20,
+                text: '欢迎使用影视全搜索'
+            },
+            {
+                time: 120,
+                text: '关注公众号：古图'
+            }
+        ]
+    });
+    dp.on('waiting', function() {
+        $("#play-status").text('加载缓慢请稍等...');
+    });
+    dp.on('playing', function() {
+        $("#play-status").text('正在播放');
+    });
+    dp.on('pause', function() {
+        $("#play-status").text('播放暂停');
+    });
+    dp.play();
+    dp.subtitle.show()
+    function play(url, name, id) {
+        $("#play-title").text(name);
+        $("#play-titles").text(name);
+
+        $("#playList" + playListId).removeClass("btn btn-primary");
+        $("#playList" + playListId).addClass("btn btn-info");
+
+        playListId = id;
+        playUrl = (url);
+        console.log('playUrl',playUrl)
+        dp.switchVideo({
+            url: playUrl,
+        });
+        setTimeout(function() {
+            dp.play();
+            //dp.subtitle.hide();
+        }, 200);
+
+        $("#playList" + id).removeClass("btn btn-info");
+        $("#playList" + id).addClass("btn btn-primary");
+    }
+
+    $("#play-url").click(function(){
+        $("#play-title").text('播放自定义链接');
+        $("#play-titles").text('');
+        console.log($("#video-url").val());
+        dp.switchVideo({
+            url: $("#video-url").val(),
+        });
+        setTimeout(function() {
+            dp.play();dp.subtitle.hide();
+        }, 200);
+    });
+</script>
+</html>

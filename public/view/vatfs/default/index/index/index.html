@@ -1,0 +1,133 @@
+<!--
+ * author : 忆云竹 < http://eyunzhu.com/ >
+ * e-mail : support@eyunzhu.com
+ * github : https://github.com/eyunzhu/vatfs
+ * blog   : http://eyunzhu.com
+ * QQ群   : 490993740
+ * 欢迎交流使用本程序，但请保留版权
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{siteBaseConfig['title']}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="keywords" content="{{siteBaseConfig['meta']['keywords']}}">
+    <meta name="description" content="{{siteBaseConfig['meta']['description']}}">
+    <meta name="author" content="忆云竹" />
+    <meta name="copyright" content="Copyright 2019 忆云竹 All rights Reserved" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/style-v.css">
+    <script src="{{__TMPL__}}/static/js/sweetalert.min.js"></script>
+    <!-- swiper -->
+    <script src="{{__TMPL__}}/static/js/jquery2.1.4.min.js"></script>
+    <script src="{{__TMPL__}}/static/js/swiperTab.js"></script>
+    <link rel="stylesheet" href="{{__TMPL__}}/static/css/swiperTab.css"/>
+
+</head>
+<body>
+    <!--顶部导航-->
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm rounded nice-nav">
+        <div class="container"><a class="navbar-dark logo" href="/" style="color: #000000;">
+            <img src="{{siteBaseConfig['logo']}}" class="mr-2">{{siteBaseConfig['title']}}</a>
+            {% if siteBaseConfig['navRight']['status'] == true %}
+            <a href="{{siteBaseConfig['navRight']['url']}}" target="_blank">{{siteBaseConfig['navRight']['name']}}</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        <!--搜索框-->
+        <form action="search" method="get">
+            <div class="row">
+                <div class="col-12 py-3">
+                    <div class="input-group my-3">
+                        <input id="input-kw" required name="kw" type="text" class="form-control nice" placeholder="{{siteBaseConfig['searchPlaceholder']}}" aria-describedby="button-addon2">
+                        <div class="input-group-append"><button class="btn btn-dark px-1 play border-0" type="submit"><img src="{{__TMPL__}}/static/search.png"height="24"></button></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div>
+            <h5 style="color:#333">{{siteBaseConfig['title']}}</h5>
+            <div class="row">
+                <div class="col">&emsp;&emsp;
+                    {% autoescape false %}
+                    {{siteBaseConfig['siteDescribe']}}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+        <!--电影搜索排行榜-->
+        {% if siteBaseConfig['isShowSearchRanking'] == true %}
+        <span style="border-left: 4px solid #993366;padding-left: 5px;">搜索排行榜</span>
+        <div class="swiper-container swiper1">
+            <div class="swiper-wrapper">
+                {% for v in rank %}
+                <div class="swiper-slide {{ (loop.first)?'selected':'' }}">{{v.name}}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="swiper-container swiper2">
+            <div class="swiper-wrapper" style="height: 600px;">
+                {% for v in rank %}
+                <div class="swiper-slide swiper-no-swiping" style="width: 290px;">
+                    <div class="row">
+                        {% for key, value in v.data %}
+                        <div class="col-md-2 col-6"
+                             style="white-space:nowrap;word-break:keep-all;text-overflow:ellipsis;overflow:hidden;">
+                            <span onclick="doSearch('{{key}}')" style="color:#007bff;">{{key}} <span
+                                    style="color:#336600;">{{value}}</span></span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!--直播源-->
+        {% if siteBaseConfig['isShowLive'] == true %}
+        <span style="border-left: 4px solid #993366;padding-left: 5px;">直播源</span>
+        <div class="swiper-container swiper11">
+            <div class="swiper-wrapper">
+                {% for v in live %}
+                <div class="swiper-slide {{ (loop.first)?'selected':'' }}">{{v.name}}</div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="swiper-container swiper22">
+            <div class="swiper-wrapper" style="height: 600px;">
+                {% for v in live %}
+                <div class="swiper-slide swiper-no-swiping" style="width: 290px;">
+                    <div class="row">
+                        {% for key, value in v.data %}
+                        <div class="col-md-2 col-6"
+                             style="white-space:nowrap;word-break:keep-all;text-overflow:ellipsis;overflow:hidden;">
+                            <a href="player?url={{value['url']}}" target="_blank">{{value['name']}}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        <!--友情链接-->
+        <div class="mt-4 mb-4 " >
+            {% for v in siteBaseConfig['link'] %}
+            <a class="text-muted" href="{{v.url}}" target="_blank">{{v.name}}</a>
+            {% endfor %}
+        </div>
+        <!--欢迎交流使用 请勿删除版权-->
+        <p class="mt-4 mb-3 text-muted text-right">
+            Powered By <a href="https://github.com/eyunzhu/vatfs" class="text-muted" target="_blank">vatfs</a>.
+            Copyright 2019 <a href="http://eyunzhu.com" class="text-muted" target="_blank">忆云竹</a> All rights Reserved.
+        </p>
+    </div>
+</body>
+<script src="{{__TMPL__}}/static/js/index.js"></script>
+<script src="{{__TMPL__}}/static/js/common.js"></script>
+</html>
